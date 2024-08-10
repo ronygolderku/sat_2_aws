@@ -43,15 +43,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: run-scripts
     steps:
-      # Step 6: Checkout the repository again to commit changes
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 7: Commit and push if there are any changes
-      - name: Commit and push if changes exist
+      - name: Commit and push if there are changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "Automated update from scripts" || echo "No changes to commit"
+          git commit -m "Automated data update" || echo "No changes to commit"
           git push
