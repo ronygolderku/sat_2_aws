@@ -19,7 +19,7 @@ bucket_name = 'wamsi-westport-project-1-1'
 s3_folder = 'csiem-data/data-lake/NASA/GHRSST/NC/'
 
 # Define the URL for the dataset
-url = "https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41"
+url = "https://polarwatch.noaa.gov/erddap/griddap/jplMURSST41"
 
 # Open the dataset and select the 'analysed_sst' variable with the desired spatial slice
 ds = xr.open_dataset(url)["analysed_sst"].sel(
