@@ -1,4 +1,4 @@
-name: Data load to AWI S3 Bucket on daily basis
+name: Data load to AWS S3 Bucket on a daily basis
 
 # Trigger the workflow daily at midnight
 on:
