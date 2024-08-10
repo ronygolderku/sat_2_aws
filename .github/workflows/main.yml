@@ -31,6 +31,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas requests numpy copernicusmarine boto3 xarray
 
+       # Step 0: Check Public IP Address
+      - name: Check Public IP
+        run: curl https://ifconfig.me
+
       # Step 4: Execute the olci.py script
       - name: Run olci script
         run: python olci.py
