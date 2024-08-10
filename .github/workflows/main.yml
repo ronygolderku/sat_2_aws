@@ -1,0 +1,57 @@
+name: Data load to AWI S3 Bucket on daily basis
+
+# Trigger the workflow daily at midnight
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day at midnight UTC
+  workflow_dispatch:  # Allows manual triggering of the workflow
+
+jobs:
+  run-scripts:
+    runs-on: ubuntu-latest
+    env:
+      COPERNICUS_USERNAME: ${{ secrets.COPERNICUS_USERNAME }}
+      COPERNICUS_PASSWORD: ${{ secrets.COPERNICUS_PASSWORD }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Set up Python environment
+      - name: Set up Python environment
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas requests numpy copernicusmarine boto3 xarray
+
+      # Step 4: Execute the olci.py script
+      - name: Run olci script
+        run: python olci.py
+
+      # Step 5: Execute the ghrsst.py script
+      - name: Run ghrsst script
+        run: python ghrsst.py
+
+  commit-and-push:
+    runs-on: ubuntu-latest
+    needs: run-scripts
+    steps:
+      # Step 6: Checkout the repository again to commit changes
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 7: Commit and push if there are any changes
+      - name: Commit and push if changes exist
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "Automated update from scripts" || echo "No changes to commit"
+          git push
