@@ -49,7 +49,7 @@ data = cm.open_dataset(
 time_str = data.time.dt.strftime('%Y%m%d').item()
 
 # Construct the file name based on the time string
-file_name = f'S3_CHL_{time_str}.nc'
+file_name = f'S3_Chl_{time_str}.nc'
 
 # Save the selected data to a netCDF file
 data.to_netcdf(file_name)
