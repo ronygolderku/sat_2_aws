@@ -27,6 +27,7 @@ s3_folder = 'csiem-data/data-lake/NASA/GHRSST/NC/'
 #     longitude=slice(114, 116)
 # )
 ds=xr.open_dataset('https://coastwatch.pfeg.noaa.gov/erddap/griddap/jplMURSST41', engine='netcdf4')
+ds = ds["analysed_sst"].sel(latitude=slice(-33, -31), longitude=slice(114,116))
 # Extract the last available date from the dataset
 last_date = ds.time[-1].values
 
